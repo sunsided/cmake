@@ -40,14 +40,26 @@ target_include_directories(baz
             # Used only when building the binary:
             src)
 
-set(PROJECT_PREFIX foo-${foo_VERSION})
+# By prefixing the installation paths with our name and version
+# we can have multiple versions installed at the same time.
+set(PROJECT_PREFIX baz-${baz_VERSION})
 
+# Here we configure variables specifying the target directories.
+set(INSTALL_RUNTIME_DIR ${CMAKE_INSTALL_BINDIR})
+set(INSTALL_LIBRARY_DIR ${CMAKE_INSTALL_LIBDIR}/${PROJECT_PREFIX}/${CMAKE_BUILD_TYPE})
+set(INSTALL_ARCHIVE_DIR ${CMAKE_INSTALL_LIBDIR}/${PROJECT_PREFIX}/${CMAKE_BUILD_TYPE}/static)
+set(INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_PREFIX})
+
+# The INSTALL(TARGET) command specifies where to install specific targets.
 install(TARGETS baz
         EXPORT baz
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+        RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR}
+        LIBRARY DESTINATION ${INSTALL_LIBRARY_DIR}
+        ARCHIVE DESTINATION ${INSTALL_ARCHIVE_DIR})
 
+# The INSTALL(FILES) command specifies where to install specific files, such as headers.
 install(FILES ${HEADER_FILES}
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_PREFIX})
+        DESTINATION ${INSTALL_INCLUDE_DIR})
 
 # Print a summary of the features.
 feature_summary(WHAT ALL)
