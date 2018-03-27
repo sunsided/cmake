@@ -8,6 +8,14 @@
 
 namespace foo {
 
+    bool is_awesome() {
+#if IS_AWESOME
+        return true;
+#else
+        return false;
+#endif
+    }
+
     static inline std::string next_sunday(boost::gregorian::date date) {
         const auto sunday = boost::gregorian::greg_weekday(boost::date_time::Sunday);
         const auto next_sunday = boost::gregorian::next_weekday(date, sunday);

@@ -9,6 +9,10 @@
 
 namespace foo {
 
+    /// \brief Determines if this library was compiled with awesomeness enabled.
+    /// \return true if this library is awesome.
+    bool is_awesome();
+
     /// \brief Obtains the date of the next sunday.
     /// \return The date of the next sunday.
     std::string next_sunday();
