@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.9)
 
-# Allows the usage of the ExternalProject_xxx commands.
-# https://cmake.org/cmake/help/v3.11/module/ExternalProject.html
-include(ExternalProject)
+# This will allow us to print a feature summary.
+# https://cmake.org/cmake/help/v3.11/module/FeatureSummary.html
+include(FeatureSummary)
 
 # Required to enable testing for link-time optimization.
 # https://cmake.org/cmake/help/v3.11/module/CheckIPOSupported.html
@@ -18,7 +18,7 @@ endif()
 find_program(CCACHE_FOUND "ccache")
 if(CCACHE_FOUND)
     message(STATUS "Using ccache for building.")
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+    set_property(GLOBAL PROPERTY LAUNCH_COMPILE ccache)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
 endif(CCACHE_FOUND)
 
@@ -39,3 +39,8 @@ endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 add_subdirectory(lib/foo)
 add_subdirectory(src/bar)
 add_subdirectory(src/baz)
+
+# Print a summary of the features.
+if(TARGET foo::foo)
+    feature_summary(WHAT ALL)
+endif(TARGET foo::foo)

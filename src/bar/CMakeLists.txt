@@ -8,10 +8,6 @@ project(bar VERSION 0.0.1 LANGUAGES CXX)
 # https://cmake.org/cmake/help/v3.11/module/GNUInstallDirs.html
 include(GNUInstallDirs)
 
-# This will allow us to print a feature summary.
-# https://cmake.org/cmake/help/v3.11/module/FeatureSummary.html
-include(FeatureSummary)
-
 # This include provides some helper functions that simplify packaging.
 # https://cmake.org/cmake/help/v3.11/module/CMakePackageConfigHelpers.html
 include(CMakePackageConfigHelpers)
@@ -127,6 +123,3 @@ export(EXPORT bar-targets
 # Register the package in the user's package registry.
 # https://cmake.org/cmake/help/v3.11/command/export.html
 export(PACKAGE bar)
-
-# Print a summary of the features.
-feature_summary(WHAT ALL)

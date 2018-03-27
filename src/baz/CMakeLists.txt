@@ -8,10 +8,6 @@ project(baz VERSION 0.0.0 LANGUAGES CXX)
 # https://cmake.org/cmake/help/v3.11/module/GNUInstallDirs.html
 include(GNUInstallDirs)
 
-# This will allow us to print a feature summary.
-# https://cmake.org/cmake/help/v3.11/module/FeatureSummary.html
-include(FeatureSummary)
-
 # If no build type was specified, set it to Release.
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING
@@ -64,6 +60,3 @@ set(INSTALL_RUNTIME_DIR ${CMAKE_INSTALL_BINDIR})
 # The INSTALL(TARGET) command specifies where to install specific targets.
 install(TARGETS baz
         RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR})
-
-# Print a summary of the features.
-feature_summary(WHAT ALL)

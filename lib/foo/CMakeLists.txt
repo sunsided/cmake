@@ -8,10 +8,6 @@ project(foo VERSION 0.1.2 LANGUAGES CXX DESCRIPTION "An installable sample libra
 # https://cmake.org/cmake/help/v3.11/module/GNUInstallDirs.html
 include(GNUInstallDirs)
 
-# This will allow us to print a feature summary.
-# https://cmake.org/cmake/help/v3.11/module/FeatureSummary.html
-include(FeatureSummary)
-
 # This include provides some helper functions that simplify packaging.
 # https://cmake.org/cmake/help/v3.11/module/CMakePackageConfigHelpers.html
 include(CMakePackageConfigHelpers)
@@ -32,6 +28,7 @@ endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 # An example option to configure the library with.
 option(ENABLE_AWESOMENESS "Enables awesomeness." ON)
+add_feature_info(Awesomeness ENABLE_AWESOMENESS "Provides awesomeness for this library.")
 
 # We pass the option value as a preprocessor macro.
 if(ENABLE_AWESOMENESS)
@@ -137,6 +134,3 @@ export(EXPORT foo-targets
 # Register the package in the user's package registry.
 # https://cmake.org/cmake/help/v3.11/command/export.html
 export(PACKAGE foo)
-
-# Print a summary of the features.
-feature_summary(WHAT ALL)
