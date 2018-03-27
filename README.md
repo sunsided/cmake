@@ -1,4 +1,4 @@
-# CMake Example Project
+# "Modern" CMake Example Project
 
 CMake is anarchy. In order to do it better, here's an
 example project that contains the following structure:
@@ -14,6 +14,11 @@ using `add_subdirectory()`. The `CMakeLists.txt` files
 are heavily documented, but care should be taken to
 also have a look at the `cmake/*-cmake.in` files of
 the individual libraries.
+
+Each installation is versioned, allowing for keeping
+multiple different versions at the same time.
+Likewise, installation paths are prefixed with the build
+configuration.
 
 ## References
 
