@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.9)
 
-# Defines project-specific attributes (PROJECT_xxx and foo_xxx)
+# Defines project-specific attributes (PROJECT_xxx and baz_xxx)
 # https://cmake.org/cmake/help/v3.11/command/project.html
-project(foo VERSION 0.1.2 LANGUAGES CXX DESCRIPTION "An installable sample library.")
+project(bar VERSION 0.0.1 LANGUAGES CXX)
 
 # This include defines standard install locations.
 # https://cmake.org/cmake/help/v3.11/module/GNUInstallDirs.html
@@ -30,56 +30,46 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
             FORCE)
 endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
-# An example option to configure the library with.
-option(ENABLE_AWESOMENESS "Enables awesomeness." ON)
-
-# We pass the option value as a preprocessor macro.
-if(ENABLE_AWESOMENESS)
-    message(STATUS "Awesomeness is enabled for this build.")
-    add_definitions(-DIS_AWESOME=1)
-endif(ENABLE_AWESOMENESS)
-
-# Our library requires Boost
-find_package(Boost 1.62 REQUIRED
-        COMPONENTS date_time)
+# This project depends on the foo package.
+find_package(foo 0.1.2 CONFIG REQUIRED)
 
 # Only public header files go here.
 set(HEADER_FILES
-        include/foo/foo.h)
+        include/bar/bar.h)
 
 # All source files and private header files go here.
 set(SOURCE_FILES
-        src/foo.cpp)
+        src/bar.cpp)
 
 # Here we define the library.
-add_library(foo
+add_library(bar
         ${HEADER_FILES}
         ${SOURCE_FILES})
 
 # We also add an alias definition so that we shadown
 # the export namespace when using add_subdirectory() instead.
-add_library(foo::foo ALIAS foo)
+add_library(bar::bar ALIAS bar)
 
 # We now link to all packages.
-target_link_libraries(foo
-        PRIVATE Boost::date_time)
+target_link_libraries(bar
+        PUBLIC foo::foo)
 
 # Required compiler features.
 # https://cmake.org/cmake/help/v3.1/manual/cmake-compile-features.7.html
-target_compile_features(foo
+target_compile_features(bar
         # Features required to compile the library itself.
-        PRIVATE cxx_std_11 cxx_auto_type)
+        PRIVATE cxx_std_11)
 
 # By prefixing the installation paths with our name and version
 # we can have multiple versions installed at the same time.
-set(PROJECT_PREFIX foo-${foo_VERSION})
+set(PROJECT_PREFIX bar-${bar_VERSION})
 
 # Defines the headers for this library.
 # https://cmake.org/cmake/help/v3.11/command/target_include_directories.html
-target_include_directories(foo
+target_include_directories(bar
         PUBLIC
             # Used when building the library:
-            $<BUILD_INTERFACE:${foo_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${bar_SOURCE_DIR}/include>
             # Used when installing the library:
             $<INSTALL_INTERFACE:include/${PROJECT_PREFIX}>
         PRIVATE
@@ -91,13 +81,13 @@ set(INSTALL_RUNTIME_DIR ${CMAKE_INSTALL_BINDIR})
 set(INSTALL_CONFIG_DIR  ${CMAKE_INSTALL_LIBDIR}/${PROJECT_PREFIX}/cmake)
 set(INSTALL_LIBRARY_DIR ${CMAKE_INSTALL_LIBDIR}/${PROJECT_PREFIX}/${CMAKE_BUILD_TYPE})
 set(INSTALL_ARCHIVE_DIR ${CMAKE_INSTALL_LIBDIR}/${PROJECT_PREFIX}/${CMAKE_BUILD_TYPE}/static)
-set(INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_PREFIX}/foo)
+set(INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_PREFIX}/bar)
 
 # Define the configuration file locations.
-set(PROJECT_CONFIG_VERSION_FILE "${PROJECT_BINARY_DIR}/foo-config-version.cmake")
-set(PROJECT_CONFIG_FILE         "${PROJECT_BINARY_DIR}/foo-config.cmake")
+set(PROJECT_CONFIG_VERSION_FILE "${PROJECT_BINARY_DIR}/bar-config-version.cmake")
+set(PROJECT_CONFIG_FILE         "${PROJECT_BINARY_DIR}/bar-config.cmake")
 
-configure_package_config_file(cmake/foo-config.cmake.in
+configure_package_config_file(cmake/bar-config.cmake.in
         ${PROJECT_CONFIG_FILE}
         INSTALL_DESTINATION ${INSTALL_CONFIG_DIR})
 
@@ -108,8 +98,8 @@ write_basic_package_version_file(
 
 # The INSTALL(TARGET) command specifies where to install specific targets.
 # By specifying EXPORT here, we add these targets to an export group.
-install(TARGETS foo
-        EXPORT foo-targets
+install(TARGETS bar
+        EXPORT bar-targets
         RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR}
         LIBRARY DESTINATION ${INSTALL_LIBRARY_DIR}
         ARCHIVE DESTINATION ${INSTALL_ARCHIVE_DIR})
@@ -125,18 +115,18 @@ install(FILES
         DESTINATION ${INSTALL_CONFIG_DIR})
 
 # The INSTALL(EXPORT) command installs a previously defined export group to a script.
-install(EXPORT foo-targets
-        FILE foo-targets.cmake
-        NAMESPACE foo::
+install(EXPORT bar-targets
+        FILE bar-targets.cmake
+        NAMESPACE bar::
         DESTINATION ${INSTALL_CONFIG_DIR})
 
-export(EXPORT foo-targets
-       FILE ${CMAKE_CURRENT_BINARY_DIR}/foo-targets.cmake
-       NAMESPACE foo::)
+export(EXPORT bar-targets
+       FILE ${CMAKE_CURRENT_BINARY_DIR}/bar-targets.cmake
+       NAMESPACE bar::)
 
 # Register the package in the user's package registry.
 # https://cmake.org/cmake/help/v3.11/command/export.html
-export(PACKAGE foo)
+export(PACKAGE bar)
 
 # Print a summary of the features.
 feature_summary(WHAT ALL)

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.9)
 
-set(CMAKE_CXX_STANDARD 11)
+# Allows the usage of the ExternalProject_xxx commands.
+# https://cmake.org/cmake/help/v3.11/module/ExternalProject.html
+include(ExternalProject)
 
 # Required to enable testing for link-time optimization.
 # https://cmake.org/cmake/help/v3.11/module/CheckIPOSupported.html
@@ -35,6 +37,5 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 add_subdirectory(lib/foo)
-#find_package(foo CONFIG REQUIRED)
-
+add_subdirectory(src/bar)
 add_subdirectory(src/baz)

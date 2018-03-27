@@ -26,6 +26,9 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
             FORCE)
 endif(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
+# This project depends on the foo package.
+find_package(bar CONFIG REQUIRED)
+
 # All source files and private header files go here.
 set(SOURCE_FILES
         src/main.cpp)
@@ -36,7 +39,7 @@ add_executable(baz
 
 # We now link to all packages.
 target_link_libraries(baz
-        foo::foo)
+        PRIVATE bar::bar)
 
 # Required compiler features.
 # https://cmake.org/cmake/help/v3.1/manual/cmake-compile-features.7.html
